@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Belal Abukhadija - Web Developer, Designer & IT Specialist Portfolio. Explore my projects, skills, and professional experience in web development and design.">
+    <title>Belal Abukhadija | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Form submit button loading state */
+        button[type="submit"] .fa-spinner,
+        button[type="button"] .fa-spinner {
+            margin-right: 5px;
+        }
+
+        button[disabled] {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Skill description style */
+        .skill-description {
+            font-size: 0.8rem;
+            color: var(--text-muted, #888);
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+        }
+
+        .lightbox-prev,
+        .lightbox-next {
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        /* Gallery item enhancements */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item:hover::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Project details styling */
+        .project-details h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .project-overview {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .project-section {
+            margin-bottom: 1.5rem;
+            background-color: var(--card-bg, #f5f5f5);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-color, #333);
+            display: flex;
+            align-items: center;
+        }
+
+        .project-section h4 i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .feature-list,
+        .tech-list {
+            padding-left: 1.2rem;
+        }
+
+        .feature-list li,
+        .tech-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .feature-list strong,
+        .tech-list strong {
+            color: var(--primary-color);
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .project-section {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="dark"] .feature-list strong,
+        [data-theme="dark"] .tech-list strong {
+            color: var(--primary-color);
+        }
+
+        /* Education section styling */
+        #education {
+            scroll-margin-top: 80px;
+            /* This makes smooth scrolling stop at a better position */
+        }
+
+        .education-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .education-card {
+            background-color: var(--card-bg, #f5f5f5);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .education-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .education-icon {
+            background-color: var(--primary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .education-icon i {
+            font-size: 28px;
+        }
+
+        .education-content {
+            flex: 1;
+        }
+
+        .education-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .education-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .education-details p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .university {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .date {
+            color: var(--text-muted, #888);
+        }
+
+        .gpa i {
+            color: #ffc107;
+            margin-right: 5px;
+        }
+
+        .education-description {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Dark mode adjustments for education section */
+        [data-theme="dark"] .education-card {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Download CV button styling */
+        .download-btn {
+            background-color: #28a745;
+            color: white;
+            border: 2px solid #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+            }
+        }
+
+        .download-btn:hover {
+            background-color: transparent;
+            color: #28a745;
+            animation: none;
+        }
+
+        .download-btn i {
+            margin-right: 5px;
+        }
+
+        /* Actions for the personal info section */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .actions {
+                justify-content: center;
+            }
+        }
+
+        /* Education description */
+        .education-description {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Certificate view button */
+        .degree-certificate {
+            margin-top: 20px;
+        }
+
+        .view-certificate-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .view-certificate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .view-certificate-btn i {
+            font-size: 1.1rem;
+            color: #FFD700;
+        }
+
+        /* Certificate modal */
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .certificate-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            background-color: transparent;
+        }
+
+        .certificate-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .certificate-close:hover {
+            color: var(--primary-color);
+        }
+
+        .certificate-img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        .certificate-loading {
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .certificate-loading i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+        }
+        
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #back-to-top:hover {
+            background-color: var(--accent-color, #0056b3);
+            transform: translateY(-3px);
+        }
+        
+        #back-to-top i {
+            font-size: 1.2rem;
+        }
+        
+        /* Logo link styling */
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+        }
+        
+        [data-theme="dark"] #back-to-top {
+            background-color: var(--primary-color);
+            box-shadow: 0 3px 10px rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <!-- Inline script for immediate access -->
+    <script>
+        // Make sure the toggle function is available immediately
+        function toggleDarkMode() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            return true;
+        }
+
+        // Set initial theme on page load before DOM is fully loaded
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDarkMode)) {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <header>
+        <nav id="navbar">
+            <div class="logo">
+                <a href="#home">Belal<span>.</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="theme-switch">
+                <button id="theme-button" onclick="toggleDarkMode(); return false;" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Personal Information Section -->
+        <section id="home" class="section">
+            <div class="particles-container" id="particles-js"></div>
+            <div class="container">
+                <div class="personal-info">
+                    <div class="profile-content">
+                        <div class="text-animate">
+                            <h1 class="greeting">Hello, I'm <span class="highlight">Belal Abukhadija</span></h1>
+                        </div>
+                        <h2>Mobile Application Developer</h2>
+                        <p>I'm a passionate mobile application developer with a strong focus on creating beautiful,
+                            functional, and user-friendly applications. I specialize in building responsive
+                            mobile apps using Flutter, Firebase, and other modern technologies to deliver exceptional
+                            user experiences across platforms.</p>
+                        <div class="actions">
+                            <a href="#contact" class="btn primary-btn"><span>Contact Me</span></a>
+                            <a href="#projects" class="btn secondary-btn"><span>View Projects</span></a>
+                            <a href="assets/BelalAbukhadija_CV.pdf" download class="btn download-btn"><span><i
+                                        class="fas fa-download"></i> Download CV</span></a>
+                        </div>
+                        <div class="scroll-indicator">
+                            <div class="mouse">
+                                <div class="wheel"></div>
+                            </div>
+                            <div>
+                                <span class="scroll-arrow">
+                                    <span></span>
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-image">
+                        <div class="image-container">
+                            <img src="assets/images/personal.png" alt="Belal Acvbdfbdfbd">
+                            <div class="image-decoration"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section">
+            <div class="section-decoration left"></div>
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="section-subtitle">Academic Background</div>
+                <div class="education-container">
+                    <div class="education-card" data-tilt>
+                        <div class="education-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="education-content">
+                            <h3>Bachelor of Computer Information Systems</h3>
+                            <div class="education-details">
+                                <p class="university">Mutah University</p>
+                                <p class="date">Feb 2021 – Jun 2024</p>
+                                <p class="gpa"><i class="fas fa-award"></i> GPA: 82.06</p>
+                            </div>
+                            <div class="education-description">
+                                <p>Comprehensive education in computer information systems.</p>
+                            </div>
+                            <div class="degree-certificate">
+                                <button class="view-certificate-btn" id="viewCertificateBtn"
+                                    onclick="openCertificateModal('assets/images/Bacdegree.jpg')">
+                                    <i class="fas fa-certificate"></i> View Degree Certificate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-decoration right"></div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <div class="section-decoration left"></div>
+            <div class="container">
+                <h2 class="section-title">My Skills</h2>
+                <div class="section-subtitle">What I'm good at</div>
+                <div class="skills-container">
+                    <!-- Mobile Development -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fab fa-android"></i>
+                        <h3>Flutter</h3>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Dart</h3>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-code"></i>
+                        <h3>State Management</h3>
+                        <p class="skill-description">Provider, GetX</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Web Development -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-globe"></i>
+                        <h3>Web Development</h3>
+                        <p class="skill-description">HTML, PHP, Laravel, Bootstrap</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Programming</h3>
+                        <p class="skill-description">C++, Java</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Database -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-database"></i>
+                        <h3>Databases</h3>
+                        <p class="skill-description">SQLite, Firebase, MySQL</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- API & Services -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-server"></i>
+                        <h3>Web Services</h3>
+                        <p class="skill-description">REST API, JSON, Firebase</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>Location Services</h3>
+                        <p class="skill-description">Geo Locator, Google Maps</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Developer Tools -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fab fa-git-alt"></i>
+                        <h3>Version Control</h3>
+                        <p class="skill-description">Git & GitHub</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-tools"></i>
+                        <h3>Development IDEs</h3>
+                        <p class="skill-description">Android Studio, VS Code, Cursor</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 95%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- UI/UX Design -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-paint-brush"></i>
+                        <h3>UI/UX Design</h3>
+                        <p class="skill-description">Figma</p>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Other Skills -->
+                    <div class="skill-card" data-tilt>
+                        <i class="fas fa-brain"></i>
+                        <h3>AI Tools</h3>
+                        <div class="skill-level">
+                            <div class="skill-bar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-decoration right"></div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2 class="section-title">My Projects</h2>
+                <div class="section-subtitle">Recent work</div>
+                <div class="projects-container">
+                    <div class="project-card" data-project="project1">
+                        <div class="project-image">
+                            <img src="assets/images/fooddelivery/im1.jpg" alt="Food Delivery App">
+                            <div class="project-overlay">
+                                <div class="overlay-content">
+                                    <h3>Food Delivery App</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Food Delivery App</h3>
+                            <p>A cross-platform mobile application for ordering food, built with Flutter and Firebase.
+                            </p>
+                            <div class="project-tech">
+                                <span>Flutter</span>
+                                <span>Firebase</span>
+                                <span>Provider</span>
+                                <span>Dart</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-project="project2">
+                        <div class="project-image">
+                            <img src="assets/images/notesapp/image9.jpg" alt="Flutter Notes App">
+                            <div class="project-overlay">
+                                <div class="overlay-content">
+                                    <h3>Flutter Notes App</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Flutter Notes App</h3>
+                            <p>A complete note-taking application with color customization, multi-language support, and
+                                SQLite database integration.</p>
+                            <div class="project-tech">
+                                <span>Flutter</span>
+                                <span>SQLite</span>
+                                <span>Localization</span>
+                                <span>Responsive UI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title">Contact Me</h2>
+                <div class="section-subtitle">Get in touch</div>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <p>belalabukhadija97@gmail.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <p>+962 789752515</p>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Amman, Jordan</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/belal-abu-khadija-9a591730b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com/belalslah"><i class="fab fa-github"></i></a>
+                            <a href="https://www.facebook.com/share/18rFvtGwkH/"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/belal_abu_khadeeja?igsh=MW5lcjd1NDlub29lMQ=="><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                                <span class="input-focus-effect"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                                <span class="input-focus-effect"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                                <span class="input-focus-effect"></span>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                                <span class="input-focus-effect"></span>
+                            </div>
+                            <button type="button" class="btn primary-btn">
+                                <span>Send Message</span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">Belal<span>.</span></div>
+                    <p>Mobile Application Developer</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#education">Education</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a
+                        href="https://www.linkedin.com/in/belal-abu-khadija-9a591730b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/belalslah"><i class="fab fa-github"></i></a>
+                    <a href="https://www.facebook.com/share/18rFvtGwkH/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/belal_abu_khadeeja?igsh=MW5lcjd1NDlub29lMQ=="><i
+                            class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Belal Abukhadija. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Modals -->
+    <!-- Food Delivery App Modal -->
+    <div id="project1Modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Food Delivery App</h2>
+                <button class="close-modal" data-modal="project1Modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-details">
+                    <h3>Food Delivery App</h3>
+                    <div class="project-overview">
+                        A comprehensive mobile application that connects users with local restaurants for seamless food
+                        delivery experiences. Built with Flutter, this app offers a smooth and intuitive interface for
+                        browsing restaurants, exploring menus, placing orders, and tracking deliveries in real-time.
+                    </div>
+
+                    <div class="project-section">
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <ul class="feature-list">
+                            <li><strong>User Authentication</strong> - Secure login/signup flow with email and social
+                                media options</li>
+                            <li><strong>Restaurant Discovery</strong> - Browse restaurants with filtering by cuisine,
+                                price range, and ratings</li>
+                            <li><strong>Menu Exploration</strong> - View detailed menu items with customization options
+                            </li>
+                            <li><strong>Cart Management</strong> - Add/remove items with real-time price calculation
+                            </li>
+                            <li><strong>Order Tracking</strong> - Live tracking with map integration and delivery status
+                                updates</li>
+                            <li><strong>Payment Integration</strong> - Multiple payment options with secure transaction
+                                processing</li>
+                            <li><strong>Reviews & Ratings</strong> - User feedback system for restaurants and delivery
+                                experience</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-section">
+                        <h4><i class="fas fa-code"></i> Technical Implementation</h4>
+                        <ul class="tech-list">
+                            <li><strong>Backend Architecture</strong> - Firebase for authentication, Firestore for
+                                database, and Cloud Functions for server-side logic</li>
+                            <li><strong>State Management</strong> - Provider pattern for efficient app-wide state
+                                handling and reactive updates</li>
+                            <li><strong>UI Framework</strong> - Custom Material Design components with responsive
+                                layouts for different screen sizes</li>
+                            <li><strong>Maps Integration</strong> - Google Maps API for location services and delivery
+                                tracking</li>
+                            <li><strong>Performance Optimization</strong> - Lazy loading, image caching, and background
+                                processing for smooth user experience</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3>Project Gallery</h3>
+                <div class="project-gallery">
+
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im2.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im3.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im4.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im5.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im6.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im7.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im8.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im9.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/fooddelivery/im10.jpg">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <a href="https://github.com/belalslah/deliveryapp" class="btn secondary-btn"><span><i class="fab fa-github"></i> GitHub</span></a>
+                </div>
+                <button class="btn" data-modal="project1Modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flutter Notes App Modal -->
+    <div id="project2Modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Flutter Notes App</h2>
+                <button class="close-modal" data-modal="project2Modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-details">
+                    <h3>Flutter Notes App</h3>
+                    <div class="project-overview">
+                        A feature-rich notes application built with Flutter that helps users organize their thoughts,
+                        create to-do lists, and manage information efficiently. The app combines functionality with a
+                        clean, intuitive interface designed for productivity and ease of use.
+                    </div>
+
+                    <div class="project-section">
+                        <h4><i class="fas fa-star"></i> Key Features</h4>
+                        <ul class="feature-list">
+                            <li><strong>Rich Text Editing</strong> - Format notes with various text styles, bullet
+                                points, and checklists</li>
+                            <li><strong>Note Categories</strong> - Organize notes with custom categories and
+                                color-coding</li>
+                            <li><strong>Search Functionality</strong> - Quickly find notes with powerful text search
+                                capabilities</li>
+                            <li><strong>Reminders & Notifications</strong> - Set reminders for time-sensitive notes and
+                                receive notifications</li>
+                            <li><strong>Cloud Sync</strong> - Seamlessly sync notes across multiple devices</li>
+                            <li><strong>Offline Mode</strong> - Full functionality available without internet connection
+                            </li>
+                            <li><strong>Dark/Light Theme</strong> - Toggle between themes for comfortable viewing in any
+                                environment</li>
+                            <li><strong>Data Export</strong> - Export notes in various formats (PDF, plain text,
+                                markdown)</li>
+                        </ul>
+                    </div>
+
+                    <div class="project-section">
+                        <h4><i class="fas fa-code"></i> Technical Implementation</h4>
+                        <ul class="tech-list">
+                            <li><strong>Architecture</strong> - Clean architecture with separation of UI, domain, and
+                                data layers</li>
+                            <li><strong>Local Database</strong> - SQLite with Room for efficient data persistence and
+                                retrieval</li>
+                            <li><strong>State Management</strong> - BLoC pattern for scalable state handling and
+                                business logic</li>
+                            <li><strong>UI/UX Design</strong> - Material Design components with custom animations for
+                                fluid interactions</li>
+                            <li><strong>Localization</strong> - Multi-language support with easy language switching</li>
+                            <li><strong>Testing</strong> - Comprehensive unit and integration tests for reliable
+                                functionality</li>
+                            <li><strong>Code Quality</strong> - Following Flutter best practices with clean,
+                                maintainable code structure</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3>Project Gallery</h3>
+                <div class="project-gallery">
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image1.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image2.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image3.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image4.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image5.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image6.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image6.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image7.jpg">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/notesapp/image8.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <a href="https://github.com/belalslah/notes" class="btn secondary-btn"><span><i class="fab fa-github"></i> GitHub</span></a>
+                </div>
+                <button class="btn" data-modal="project2Modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
+    <!-- Lightbox markup -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-container">
+            <div class="lightbox-content">
+                <img id="lightbox-img" src="" alt="Enlarged image">
+                <div class="lightbox-caption" id="lightbox-caption"></div>
+            </div>
+            <div class="lightbox-close" id="lightbox-close">&times;</div>
+            <div class="lightbox-nav">
+                <div class="lightbox-prev" id="lightbox-prev">&#10094;</div>
+                <div class="lightbox-next" id="lightbox-next">&#10095;</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="certificate-modal">
+        <div class="certificate-modal-content">
+            <span class="certificate-close">&times;</span>
+            <div class="certificate-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading certificate...</p>
+            </div>
+            <img id="certificateImg" class="certificate-img" src="" alt="Certificate">
+        </div>
+    </div>
+
+    <!-- Add back to top button at the bottom of the page -->
+    <a href="#home" id="back-to-top" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</body>
+
+</html>
